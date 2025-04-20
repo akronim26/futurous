@@ -73,3 +73,5 @@ build/Release
 *.swp
 *.swo
 *~
+
+.dockerignore

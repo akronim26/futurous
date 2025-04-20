@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: futurous-postgres
+    environment:
+      POSTGRES_DB: futurous
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Abhi@31July
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - futurous-network
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: futurous-backend
+    environment:
+      - PORT=3001
+      - PG_PORT=5432
+      - PG_PASSWORD=Abhi@31July
+      - JWT_SECRET=bF5s7sxds65Bds6yBxsnSTSaHDs9
+      - DATABASE_URL=postgres://postgres:Abhi@31July@postgres:5432/futurous
+      - NODE_ENV=development
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+    networks:
+      - futurous-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: futurous-frontend
+    environment:
+      - VITE_API_URL=http://localhost:3001
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - futurous-network
+
+networks:
+  futurous-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

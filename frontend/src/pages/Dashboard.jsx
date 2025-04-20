@@ -7,6 +7,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toastOptions } from "../context/toastConfig";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
@@ -24,7 +26,7 @@ const Dashboard = () => {
         console.log("No token found");
         return;
       }
-      await axios.delete(`http://localhost:3000/api/messages/${id}`, {
+      await axios.delete(`${API_URL}/api/messages/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessages(messages.filter((message) => message.id !== id));
@@ -50,7 +52,7 @@ const Dashboard = () => {
         console.log("No token found");
         return;
       }
-      const response = await fetch("http://localhost:3000/api/messages", {
+      const response = await fetch(`${API_URL}/api/messages`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

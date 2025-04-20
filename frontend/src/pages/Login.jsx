@@ -6,6 +6,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toastOptions } from "../context/toastConfig";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,16 +16,27 @@ const Login = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3000/api/auth", {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      };
+  
+      const res = await axios.post(`${API_URL}/api/auth`, {
         email,
         password,
-      });
-      localStorage.setItem("token", res.data.token);
-      toast.success("Login successful!", toastOptions);
-      navigate("/messages");
+      }, config);
+  
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+        toast.success("Login successful!", toastOptions);
+        navigate("/messages");
+      }
     } catch (err) {
+      console.error("Login error:", err.response?.data);
       const errorMessage = err.response?.data?.msg;
-
+  
       if (errorMessage === "Please enter all fields") {
         toast.error("Please enter all fields", toastOptions);
       } else if (errorMessage === "Invalid credentials") {

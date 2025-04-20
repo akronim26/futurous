@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 const UpdateMessage = () => {
   const [message, setMessage] = useState("");
@@ -20,7 +21,7 @@ const UpdateMessage = () => {
         return;
       }
       await axios.put(
-        `http://localhost:3000/api/messages/${id}`,
+        `${API_URL}/api/messages/${id}`,
         {
           content: message,
           delivery_time: scheduledTime,
