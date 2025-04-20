@@ -6,6 +6,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toastOptions } from "../context/toastConfig";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +16,7 @@ const Signup = () => {
   const handleSignup = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("http://localhost:3000/api/auth/signup", {
+      await axios.post(`${API_URL}/api/auth/signup`, {
         email,
         password,
       });

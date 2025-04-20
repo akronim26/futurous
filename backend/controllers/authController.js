@@ -37,28 +37,38 @@ authRouter.post("/signup", async (req, res) => {
 authRouter.post("/", async (req, res) => {
   try {
     const { email, password } = req.body;
+    
     if (!email || !password) {
       return res.status(400).json({ msg: "Please enter all fields" });
     }
-    const user = await pool.query("SELECT * FROM users WHERE email = $1", [
-      email,
-    ]);
+
+    const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
 
     if (user.rows.length === 0) {
-      return res.status(400).json({ msg: "User does not exist!" });
+      return res.status(400).json({ msg: "User does not exist" });
     }
-    const passwordMatch = await bcrypt.compare(password, user.rows[0].password);
 
-    if (!passwordMatch) {
+    const isMatch = await bcrypt.compare(password, user.rows[0].password);
+
+    if (!isMatch) {
       return res.status(401).json({ msg: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user.rows[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { id: user.rows[0].id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
-    res.status(200).json({ token });
+    res.status(200).json({
+      token,
+      user: {
+        id: user.rows[0].id,
+        email: user.rows[0].email
+      }
+    });
   } catch (error) {
+    console.error("Login error:", error);
     res.status(500).json({ msg: "Server Error", error: error.message });
   }
 });

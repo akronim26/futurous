@@ -6,6 +6,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toastOptions } from "../context/toastConfig";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const CreateMessage = () => {
   const [message, setMessage] = useState("");
   const [scheduledTime, setScheduledTime] = useState("");
@@ -19,7 +21,7 @@ const CreateMessage = () => {
         return;
       }
       await axios.post(
-        "http://localhost:3000/api/messages/create",
+        `${API_URL}/api/messages/create`,
         {
           content: message,
           delivery_time: scheduledTime,
@@ -32,6 +34,7 @@ const CreateMessage = () => {
       navigate("/messages");
     } catch (err) {
       const errorMessage = err.response?.data?.msg;
+      console.log("Error:", errorMessage);
       if (errorMessage === "Please enter all fields") {
         toast.error("Please enter all fields", toastOptions);
       } else if (errorMessage === "Delivery time cannot be in the past") {
