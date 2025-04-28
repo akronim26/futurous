@@ -69,34 +69,13 @@ futurous-postgres/
 
 1. Clone the repository:
 ```bash
-git clone [<repository-url>](https://github.com/abhivansh31/futurous)
+git clone https://github.com/abhivansh31/futurous
 cd futurous-postgres
 ```
-
-2. Configure environment variables:
-
-Create `.env` in backend:
-```properties
-PORT=3001
-PG_PORT=5432
-PG_PASSWORD=your_password
-JWT_SECRET=your_secret_key
-DATABASE_URL=postgres://postgres:password@postgres:5432/futurous
-```
-
-Create `.env` in frontend:
-```properties
-VITE_API_URL=http://localhost:3001
-```
-
-3. Run with Docker Compose:
+2. Run with Docker Compose:
 ```bash
 docker-compose up --build
 ```
-
-4. Access the application:
-   - Frontend: http://localhost:5173
-   - Backend API: http://localhost:3001
 
 ## API Endpoints
 
