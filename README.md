@@ -69,7 +69,7 @@ futurous-postgres/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/abhivansh31/futurous
+git clone https://github.com/akronim26/futurous
 cd futurous-postgres
 ```
 2. Run with Docker Compose:
